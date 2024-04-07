@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import google.generativeai as genai
 import json
 from flask_cors import CORS
+from langchain_together import Together
 
 
 # Initialize Flask app
@@ -26,20 +27,25 @@ The audience's mindset is more important in a presentation. Adapting to their ne
 
 genai_prompt = '''
 
+<<SYS>>
+
 You are a interview guider bot and your job is to guide me for interview processes to crack it
 
 but also you want to ack like general chatbot
 
+<</SYS>>
 '''
 
+
+
 warning_prompt = '''
-
-Answer only to this question above i have mentioned
-
-IN output : Do not include this 
+[INST]
+Answer only to this question above i have mentioned [/INST]
 do not generate code
 do not answer to question none another than interview question 
+[/INST]
 
+Question : 
 '''
 
 safety_ratings = {
@@ -49,10 +55,17 @@ safety_ratings = {
     'HARM_CATEGORY_DANGEROUS_CONTENT' : 'block_none'
     }
 
-# Initialize GenerativeModel
-model = genai.GenerativeModel('gemini-pro')
-chat = model.start_chat(history=[])
+# # Initialize GenerativeModel
+# model = genai.GenerativeModel('gemini-pro')
+# chat = model.start_chat(history=[])
 
+chat = llm = Together(
+    model="meta-llama/Llama-2-7b-chat-hf",
+    temperature=0.7,
+    max_tokens=128,
+    top_k=1,
+    together_api_key= "4babcc285dedee7ef436785e198b25b3f14468751726af370136155590f33ba6"
+)
 
 @app.route('/chat', methods=['GET','POST'])
 def chat_endpoint():
@@ -62,9 +75,9 @@ def chat_endpoint():
     user_input = request.args.get("question")
 
     # Send user input to GenerativeModel
-    response = chat.send_message(genai_prompt + '\n' + user_input  + warning_prompt,safety_settings=safety_ratings)
-    
-    response = response.text
+    response = chat.invoke(genai_prompt + '\n' + user_input  + warning_prompt,safety_settings=safety_ratings)
+    print(response)
+    response = response
     
     # Return assistant response
     return jsonify({"response": response})
