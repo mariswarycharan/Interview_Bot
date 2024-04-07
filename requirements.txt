@@ -1,4 +1,4 @@
-google-generativeai﻿==0.3.2
+google_generativeai﻿==0.3.2
 flask
 Flask-Cors
 gunicorn
