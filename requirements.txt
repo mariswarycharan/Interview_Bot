@@ -1,4 +1,5 @@
-google_generativeai﻿==0.3.2
+langchain_together
+langchain
 flask
 Flask-Cors
 gunicorn
