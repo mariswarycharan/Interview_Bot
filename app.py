@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configure GenerativeAI API
-genai.configure(api_key='AIzaSyAnIm6lpzgoIdermHNHy0BFpzxe8ySJjK0')  # Replace 'YOUR_API_KEY' with your actual API key
+# genai.configure(api_key='AIzaSyAnIm6lpzgoIdermHNHy0BFpzxe8ySJjK0')  # Replace 'YOUR_API_KEY' with your actual API key
 
 content = '''
 
@@ -47,12 +47,12 @@ do not answer to question none another than interview question
 Question : 
 '''
 
-safety_ratings = {
-    'HARM_CATEGORY_SEXUALLY_EXPLICIT':'block_none',
-    'HARM_CATEGORY_HATE_SPEECH': 'block_none',
-    'HARM_CATEGORY_HARASSMENT': 'block_none',
-    'HARM_CATEGORY_DANGEROUS_CONTENT' : 'block_none'
-    }
+# safety_ratings = {
+#     'HARM_CATEGORY_SEXUALLY_EXPLICIT':'block_none',
+#     'HARM_CATEGORY_HATE_SPEECH': 'block_none',
+#     'HARM_CATEGORY_HARASSMENT': 'block_none',
+#     'HARM_CATEGORY_DANGEROUS_CONTENT' : 'block_none'
+#     }
 
 # # Initialize GenerativeModel
 # model = genai.GenerativeModel('gemini-pro')
@@ -74,7 +74,7 @@ def chat_endpoint():
     user_input = request.args.get("question")
 
     # Send user input to GenerativeModel
-    response = chat.invoke(genai_prompt + '\n' + user_input  + warning_prompt,safety_settings=safety_ratings)
+    response = chat.invoke(genai_prompt + '\n' + user_input  + warning_prompt)
     print(response)
     response = response
     
