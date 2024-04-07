@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import google.generativeai as genai
 import json
 from flask_cors import CORS
 from langchain_together import Together
